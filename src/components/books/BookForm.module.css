@@ -1,0 +1,91 @@
+.form {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  max-width: 700px;
+}
+
+.form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.form__grid--full {
+  grid-column: 1 / -1;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.form__label span {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.form__input,
+.form__select {
+  background: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-primary);
+  font-size: 0.9375rem;
+  transition: all var(--transition-fast);
+  outline: none;
+  width: 100%;
+}
+
+.form__input::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+.form__input:focus,
+.form__select:focus {
+  background: var(--color-bg-input-focus);
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.form__select option {
+  background: #131929;
+  color: var(--color-text-primary);
+}
+
+.form__error {
+  font-size: 0.8rem;
+  color: var(--color-danger);
+}
+
+.form__divider {
+  height: 1px;
+  background: var(--color-border);
+  grid-column: 1 / -1;
+  margin: var(--space-2) 0;
+}
+
+.form__actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .form__grid {
+    grid-template-columns: 1fr;
+  }
+}
