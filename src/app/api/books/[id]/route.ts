@@ -34,12 +34,14 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
     }
 
+    // Store publicationDate at noon UTC to avoid timezone day-shift issues.
+    const dateStr = publicationDate.split('T')[0];
     const book = await prisma.book.update({
       where: { id: Number(id) },
       data: {
         title,
         author,
-        publicationDate: new Date(publicationDate),
+        publicationDate: new Date(`${dateStr}T12:00:00.000Z`),
         publisher,
         numberOfPages: Number(numberOfPages),
         categoryId: Number(categoryId),

@@ -76,7 +76,7 @@ export default function BookForm({ initial }: BookFormProps) {
         body: JSON.stringify({
           title: title.trim(),
           author: author.trim(),
-          publicationDate: new Date(publicationDate).toISOString(),
+          publicationDate, // Send raw YYYY-MM-DD; API stores as noon UTC to avoid day-shift
           publisher: publisher.trim(),
           numberOfPages: Number(numberOfPages),
           categoryId: Number(categoryId),

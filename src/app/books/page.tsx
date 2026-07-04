@@ -10,7 +10,6 @@ import BookFilters from '@/components/books/BookFilters';
 import EmptyState from '@/components/ui/EmptyState';
 import styles from './BooksPage.module.css';
 
-// Same palette as BookCard for consistent featured covers
 const COVER_PALETTES = [
   'linear-gradient(160deg, #1a1040 0%, #3b1fa8 60%, #6d28d9 100%)',
   'linear-gradient(160deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
@@ -28,96 +27,103 @@ function getCoverStyle(id: number) {
 
 function BooksContent() {
   const searchParams = useSearchParams();
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  // All books (unfiltered) — for hero section & stats. Always static.
+  const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [totalCategories, setTotalCategories] = useState(0);
 
-  const fetchBooks = useCallback(async () => {
-    setLoading(true);
+  // Filtered books — for the grid section
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
+  const [gridLoading, setGridLoading] = useState(true);
+
+  const isFiltered = !!(
+    searchParams.get('search') ||
+    searchParams.get('categoryId') ||
+    searchParams.get('from') ||
+    searchParams.get('to')
+  );
+
+  // Fetch all books + categories once on mount (for hero/stats — no filter)
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/books').then((r) => r.json()),
+      fetch('/api/categories').then((r) => r.json()),
+    ]).then(([booksData, catData]) => {
+      setAllBooks(booksData.data ?? []);
+      setTotalCategories(catData.data?.length ?? 0);
+    }).catch(() => { });
+  }, []);
+
+  // Fetch filtered books whenever search params change
+  const fetchFiltered = useCallback(async () => {
+    setGridLoading(true);
     try {
       const params = new URLSearchParams(searchParams.toString());
-      const [booksRes, catRes] = await Promise.all([
-        fetch(`/api/books?${params.toString()}`),
-        fetch('/api/categories'),
-      ]);
-      const booksData = await booksRes.json();
-      const catData = await catRes.json();
-      setBooks(booksData.data ?? []);
-      setTotalCategories(catData.data?.length ?? 0);
+      const res = await fetch(`/api/books?${params.toString()}`);
+      const data = await res.json();
+      setFilteredBooks(data.data ?? []);
     } catch {
-      setBooks([]);
+      setFilteredBooks([]);
     } finally {
-      setLoading(false);
+      setGridLoading(false);
     }
   }, [searchParams]);
 
   useEffect(() => {
-    fetchBooks();
-  }, [fetchBooks]);
+    fetchFiltered();
+  }, [fetchFiltered]);
 
-  const featured = books[0];
-  const rest = books.slice(1);
-
-  const isFiltered =
-    searchParams.get('search') ||
-    searchParams.get('categoryId') ||
-    searchParams.get('from') ||
-    searchParams.get('to');
+  const featured = allBooks[0];
 
   return (
     <>
-      {/* Hero: always show stats panel; featured book only when not filtering */}
-      {!loading && books.length > 0 && (
-        <div className={isFiltered ? styles.hero_compact : styles.hero}>
-          {/* Featured Book — hidden when filter is active */}
-          {!isFiltered && featured && (
-            <div className={styles.featured}>
+      {/* ── Hero Section: ALWAYS visible, never changes on filter ── */}
+      {featured && (
+        <div className={styles.hero}>
+          {/* Featured Book */}
+          <div className={styles.featured}>
+            <div
+              className={styles.featured_bg}
+              style={{ background: getCoverStyle(featured.id) }}
+            />
+            <div className={styles.featured_overlay} />
+            <div className={styles.featured_body}>
               <div
-                className={styles.featured_bg}
+                className={styles.featured_cover}
                 style={{ background: getCoverStyle(featured.id) }}
-              />
-              <div className={styles.featured_overlay} />
-
-              <div className={styles.featured_body}>
-                <div
-                  className={styles.featured_cover}
-                  style={{ background: getCoverStyle(featured.id) }}
-                >
-                  <p className={styles.featured_cover_author}>{featured.author}</p>
-                  <p className={styles.featured_cover_title}>{featured.title}</p>
+              >
+                <p className={styles.featured_cover_author}>{featured.author}</p>
+                <p className={styles.featured_cover_title}>{featured.title}</p>
+              </div>
+              <div className={styles.featured_text}>
+                <span className={styles.featured_label}>Latest Added</span>
+                <h2 className={styles.featured_title}>{featured.title}</h2>
+                <p className={styles.featured_author}>by {featured.author}</p>
+                <div className={styles.featured_meta}>
+                  {featured.category && (
+                    <span className={styles.featured_badge}>{featured.category.name}</span>
+                  )}
+                  <span className={styles.featured_pages}>
+                    {featured.numberOfPages.toLocaleString()} pages
+                  </span>
                 </div>
-
-                <div className={styles.featured_text}>
-                  <span className={styles.featured_label}>Latest Added</span>
-                  <h2 className={styles.featured_title}>{featured.title}</h2>
-                  <p className={styles.featured_author}>by {featured.author}</p>
-                  <div className={styles.featured_meta}>
-                    {featured.category && (
-                      <span className={styles.featured_badge}>{featured.category.name}</span>
-                    )}
-                    <span className={styles.featured_pages}>
-                      {featured.numberOfPages.toLocaleString()} pages
-                    </span>
-                  </div>
-                  <div className={styles.featured_dots}>
-                    <span className={`${styles.featured_dot} ${styles.active}`} />
-                    <span className={styles.featured_dot} />
-                    <span className={styles.featured_dot} />
-                  </div>
+                <div className={styles.featured_dots}>
+                  <span className={`${styles.featured_dot} ${styles.active}`} />
+                  <span className={styles.featured_dot} />
+                  <span className={styles.featured_dot} />
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Stats Panel — ALWAYS visible */}
+          {/* Stats Panel */}
           <div className={styles.stats_panel}>
             <h2 className={styles.stats_heading}>My Library</h2>
-
             <a href="/books" className={styles.stat_card}>
               <div className={styles.stat_card_text}>
                 <span className={styles.stat_card_title}>Total Books</span>
                 <span className={styles.stat_card_sub}>
-                  {books.length} book{books.length !== 1 ? 's' : ''} in your collection
+                  {allBooks.length} book{allBooks.length !== 1 ? 's' : ''} in your collection
                 </span>
               </div>
               <div
@@ -127,7 +133,6 @@ function BooksContent() {
                 <BookOpen size={20} color="#a78bfa" />
               </div>
             </a>
-
             <a href="/categories" className={styles.stat_card}>
               <div className={styles.stat_card_text}>
                 <span className={styles.stat_card_title}>Categories</span>
@@ -142,7 +147,6 @@ function BooksContent() {
                 <Tag size={20} color="#34d399" />
               </div>
             </a>
-
             <a href="/books/new" className={styles.stat_card}>
               <div className={styles.stat_card_text}>
                 <span className={styles.stat_card_title}>Manage Collection</span>
@@ -159,15 +163,15 @@ function BooksContent() {
         </div>
       )}
 
-      {/* Filters */}
+      {/* ── Filters ── */}
       <BookFilters />
 
-      {/* All Books Section */}
-      {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '4rem' }}>
-          <span className="spinner" style={{ width: 36, height: 36 }} />
+      {/* ── Book Grid ── */}
+      {gridLoading ? (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '3rem' }}>
+          <span className="spinner" style={{ width: 32, height: 32 }} />
         </div>
-      ) : books.length === 0 ? (
+      ) : filteredBooks.length === 0 ? (
         <EmptyState
           icon={<BookOpen size={40} strokeWidth={1.5} color="var(--color-text-muted)" />}
           title="No books found"
@@ -186,12 +190,12 @@ function BooksContent() {
               {isFiltered ? 'Search Results' : 'All Books'}
             </h2>
             <span className={styles.section_count}>
-              {books.length} {books.length === 1 ? 'book' : 'books'}
+              {filteredBooks.length} {filteredBooks.length === 1 ? 'book' : 'books'}
             </span>
           </div>
           <div className={styles.book_grid} style={{ marginTop: '1rem' }}>
-            {books.map((book) => (
-              <BookCard key={book.id} book={book} onDeleted={fetchBooks} />
+            {filteredBooks.map((book) => (
+              <BookCard key={book.id} book={book} onDeleted={fetchFiltered} />
             ))}
           </div>
         </div>
@@ -203,7 +207,6 @@ function BooksContent() {
 export default function BooksPage() {
   return (
     <div className={styles.page}>
-      {/* Page Header */}
       <div className={styles.header}>
         <h1 className={styles.header_title}>
           <Library size={26} strokeWidth={2} color="var(--color-accent-hover)" />
