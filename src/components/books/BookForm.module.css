@@ -1,9 +1,11 @@
 .form {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   padding: var(--space-8);
   max-width: 700px;
+  box-shadow: var(--shadow-md);
+  animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .form__grid {
@@ -23,8 +25,8 @@
 }
 
 .form__label {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--color-text-secondary);
   letter-spacing: 0.02em;
 }
@@ -55,17 +57,19 @@
 .form__select:focus {
   background: var(--color-bg-input-focus);
   border-color: var(--color-border-focus);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
 .form__select option {
-  background: #131929;
+  background: #08071a;
   color: var(--color-text-primary);
 }
 
 .form__error {
   font-size: 0.8rem;
-  color: var(--color-danger);
+  font-weight: 600;
+  color: var(--color-danger-hover);
+  margin-top: 4px;
 }
 
 .form__divider {
@@ -79,9 +83,9 @@
   display: flex;
   gap: var(--space-3);
   justify-content: flex-end;
-  padding-top: var(--space-5);
+  padding-top: var(--space-6);
   border-top: 1px solid var(--color-border);
-  margin-top: var(--space-4);
+  margin-top: var(--space-6);
 }
 
 @media (max-width: 640px) {

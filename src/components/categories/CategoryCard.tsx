@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Pencil, Trash2, Tag } from 'lucide-react';
 import { Category } from '@/types';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
@@ -44,7 +45,9 @@ export default function CategoryCard({ category, onDeleted }: CategoryCardProps)
     <>
       <div className={styles.card}>
         <div className={styles.card__header}>
-          <div className={styles.card__icon}>🏷️</div>
+          <div className={styles.card__icon}>
+            <Tag size={22} strokeWidth={1.8} />
+          </div>
           <h3 className={styles.card__name}>{category.name}</h3>
           <div className={styles.card__actions}>
             <Button
@@ -53,7 +56,7 @@ export default function CategoryCard({ category, onDeleted }: CategoryCardProps)
               href={`/categories/${category.id}/edit`}
               title="Edit category"
             >
-              ✏️
+              <Pencil size={15} />
             </Button>
             <Button
               variant="ghost"
@@ -61,7 +64,7 @@ export default function CategoryCard({ category, onDeleted }: CategoryCardProps)
               onClick={() => setShowModal(true)}
               title="Delete category"
             >
-              🗑️
+              <Trash2 size={15} />
             </Button>
           </div>
         </div>

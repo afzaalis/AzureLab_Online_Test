@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { BookOpen, Plus } from 'lucide-react';
 import { Book } from '@/types';
 import Button from '@/components/ui/Button';
 import BookCard from '@/components/books/BookCard';
 import BookFilters from '@/components/books/BookFilters';
 import EmptyState from '@/components/ui/EmptyState';
-import { Suspense } from 'react';
 
 function BookListContent() {
   const searchParams = useSearchParams();
@@ -48,10 +48,14 @@ function BookListContent() {
         </div>
       ) : books.length === 0 ? (
         <EmptyState
-          icon="📚"
           title="No books found"
           description="Try adjusting your filters or add your first book to get started."
-          action={<Button href="/books/new">+ Add Book</Button>}
+          action={
+            <Button href="/books/new">
+              <Plus size={16} />
+              Add Book
+            </Button>
+          }
         />
       ) : (
         <>
@@ -80,10 +84,16 @@ export default function BooksPage() {
     <div className="page-wrapper">
       <div className="page-header">
         <div>
-          <h1 className="page-title">📚 Books</h1>
+          <h1 className="page-title">
+            <BookOpen size={32} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.5rem' }} />
+            Books
+          </h1>
           <p className="page-subtitle">Browse and manage your book collection</p>
         </div>
-        <Button href="/books/new">+ Add Book</Button>
+        <Button href="/books/new">
+          <Plus size={16} />
+          Add Book
+        </Button>
       </div>
 
       <Suspense fallback={<div className="spinner" />}>

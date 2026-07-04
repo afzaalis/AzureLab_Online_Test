@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Search, X } from 'lucide-react';
 import { Category } from '@/types';
 import styles from './BookFilters.module.css';
 
@@ -57,7 +58,7 @@ export default function BookFilters() {
         <div className={styles.filters__group}>
           <label className={styles.filters__label}>Search</label>
           <div className={styles.filters__search_wrapper}>
-            <span className={styles.filters__search_icon}>🔍</span>
+            <span className={styles.filters__search_icon}><Search size={14} /></span>
             <input
               id="book-search"
               type="text"
@@ -118,6 +119,7 @@ export default function BookFilters() {
           <button className={styles.filters__clear} onClick={clearAll}>
             <span className={styles.filters__active_count}>{activeCount}</span>
             Clear filters
+            <X size={13} />
           </button>
         </div>
       )}

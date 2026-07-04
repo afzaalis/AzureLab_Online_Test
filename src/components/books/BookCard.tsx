@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Pencil, Trash2, CalendarDays, Building2, FileText } from 'lucide-react';
 import { Book } from '@/types';
 import Button from '../ui/Button';
 import Badge from '../ui/Badge';
@@ -52,15 +53,15 @@ export default function BookCard({ book, onDeleted }: BookCardProps) {
           <p className={styles.card__author}>by {book.author}</p>
           <div className={styles.card__meta}>
             <span className={styles.card__meta_item}>
-              <span className={styles.card__meta_icon}>📅</span>
+              <CalendarDays size={13} className={styles.card__meta_icon} />
               {pubDate}
             </span>
             <span className={styles.card__meta_item}>
-              <span className={styles.card__meta_icon}>🏢</span>
+              <Building2 size={13} className={styles.card__meta_icon} />
               {book.publisher}
             </span>
             <span className={styles.card__meta_item}>
-              <span className={styles.card__meta_icon}>📄</span>
+              <FileText size={13} className={styles.card__meta_icon} />
               {book.numberOfPages.toLocaleString()} pages
             </span>
             {book.category && (
@@ -76,7 +77,7 @@ export default function BookCard({ book, onDeleted }: BookCardProps) {
             href={`/books/${book.id}/edit`}
             title="Edit book"
           >
-            ✏️
+            <Pencil size={15} />
           </Button>
           <Button
             variant="ghost"
@@ -84,7 +85,7 @@ export default function BookCard({ book, onDeleted }: BookCardProps) {
             onClick={() => setShowModal(true)}
             title="Delete book"
           >
-            🗑️
+            <Trash2 size={15} />
           </Button>
         </div>
       </div>
