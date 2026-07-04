@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { Tag, Plus } from 'lucide-react';
 import { Category } from '@/types';
 import Button from '@/components/ui/Button';
 import CategoryCard from '@/components/categories/CategoryCard';
@@ -31,10 +32,16 @@ export default function CategoriesPage() {
     <div className="page-wrapper">
       <div className="page-header">
         <div>
-          <h1 className="page-title">🏷️ Categories</h1>
+          <h1 className="page-title">
+            <Tag size={30} strokeWidth={2} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '0.5rem' }} />
+            Categories
+          </h1>
           <p className="page-subtitle">Organize books into categories</p>
         </div>
-        <Button href="/categories/new">+ Add Category</Button>
+        <Button href="/categories/new">
+          <Plus size={16} />
+          Add Category
+        </Button>
       </div>
 
       {loading ? (
@@ -49,10 +56,14 @@ export default function CategoriesPage() {
         </div>
       ) : categories.length === 0 ? (
         <EmptyState
-          icon="🏷️"
           title="No categories yet"
           description="Create your first category to start organizing your books."
-          action={<Button href="/categories/new">+ Add Category</Button>}
+          action={
+            <Button href="/categories/new">
+              <Plus size={16} />
+              Add Category
+            </Button>
+          }
         />
       ) : (
         <>
