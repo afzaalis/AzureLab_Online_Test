@@ -32,6 +32,31 @@
   align-items: start;
 }
 
+/* When filter is active: stats panel spans full width */
+.hero_compact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.hero_compact .stats_panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.hero_compact .stats_heading {
+  grid-column: 1 / -1;
+  padding-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .hero_compact .stats_panel {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ── Featured Book card (left) ── */
 .featured {
   border-radius: var(--radius-lg);

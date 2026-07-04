@@ -66,51 +66,50 @@ function BooksContent() {
 
   return (
     <>
-      {/* Only show hero when NOT filtering and books exist */}
-      {!isFiltered && !loading && featured && (
-        <div className={styles.hero}>
-          {/* Featured Book */}
-          <div className={styles.featured}>
-            {/* Background cover gradient blurred */}
-            <div
-              className={styles.featured_bg}
-              style={{ background: getCoverStyle(featured.id), filter: 'blur(0px)' }}
-            />
-            <div className={styles.featured_overlay} />
-
-            <div className={styles.featured_body}>
-              {/* Mini book cover */}
+      {/* Hero: always show stats panel; featured book only when not filtering */}
+      {!loading && books.length > 0 && (
+        <div className={isFiltered ? styles.hero_compact : styles.hero}>
+          {/* Featured Book — hidden when filter is active */}
+          {!isFiltered && featured && (
+            <div className={styles.featured}>
               <div
-                className={styles.featured_cover}
+                className={styles.featured_bg}
                 style={{ background: getCoverStyle(featured.id) }}
-              >
-                <p className={styles.featured_cover_author}>{featured.author}</p>
-                <p className={styles.featured_cover_title}>{featured.title}</p>
-              </div>
+              />
+              <div className={styles.featured_overlay} />
 
-              {/* Text */}
-              <div className={styles.featured_text}>
-                <span className={styles.featured_label}>Latest Added</span>
-                <h2 className={styles.featured_title}>{featured.title}</h2>
-                <p className={styles.featured_author}>by {featured.author}</p>
-                <div className={styles.featured_meta}>
-                  {featured.category && (
-                    <span className={styles.featured_badge}>{featured.category.name}</span>
-                  )}
-                  <span className={styles.featured_pages}>
-                    {featured.numberOfPages.toLocaleString()} pages
-                  </span>
+              <div className={styles.featured_body}>
+                <div
+                  className={styles.featured_cover}
+                  style={{ background: getCoverStyle(featured.id) }}
+                >
+                  <p className={styles.featured_cover_author}>{featured.author}</p>
+                  <p className={styles.featured_cover_title}>{featured.title}</p>
                 </div>
-                <div className={styles.featured_dots}>
-                  <span className={`${styles.featured_dot} ${styles.active}`} />
-                  <span className={styles.featured_dot} />
-                  <span className={styles.featured_dot} />
+
+                <div className={styles.featured_text}>
+                  <span className={styles.featured_label}>Latest Added</span>
+                  <h2 className={styles.featured_title}>{featured.title}</h2>
+                  <p className={styles.featured_author}>by {featured.author}</p>
+                  <div className={styles.featured_meta}>
+                    {featured.category && (
+                      <span className={styles.featured_badge}>{featured.category.name}</span>
+                    )}
+                    <span className={styles.featured_pages}>
+                      {featured.numberOfPages.toLocaleString()} pages
+                    </span>
+                  </div>
+                  <div className={styles.featured_dots}>
+                    <span className={`${styles.featured_dot} ${styles.active}`} />
+                    <span className={styles.featured_dot} />
+                    <span className={styles.featured_dot} />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Stats Panel */}
+          {/* Stats Panel — ALWAYS visible */}
           <div className={styles.stats_panel}>
             <h2 className={styles.stats_heading}>My Library</h2>
 
@@ -144,7 +143,7 @@ function BooksContent() {
               </div>
             </a>
 
-            <a href="/books" className={styles.stat_card}>
+            <a href="/books/new" className={styles.stat_card}>
               <div className={styles.stat_card_text}>
                 <span className={styles.stat_card_title}>Manage Collection</span>
                 <span className={styles.stat_card_sub}>Add, edit, filter and organize</span>
