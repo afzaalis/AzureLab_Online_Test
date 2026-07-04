@@ -1,72 +1,120 @@
 # Book Management System
 
-A modern Book Management System developed as a **Technical Assessment Project for Azura Labs Internship - Fullstack Engineer**. This application enables users to efficiently manage books and book categories through a clean, responsive, and user-friendly interface.
+A modern Book Management System developed as part of the **Azura Labs Fullstack Engineer Internship Technical Assessment**.
 
-The UI/UX design is **inspired by modern web novel platforms**, adopting a premium dark-themed aesthetic with elegant typography, card-based layouts, and smooth interactions to create a more engaging reading and library management experience.
+This application allows users to manage book categories and books through a clean and responsive interface. The UI design is inspired by modern web novel platforms, featuring a premium dark theme, elegant typography, and a card-based layout to provide a polished user experience.
 
-## Features & Specifications
+---
 
-This application fulfills the following core requirements:
+## Features
 
-### 1. Book Categories Management
-- Create, update, and delete book categories.
-- View a complete list of all categories (`/categories`).
+### Category Management
+- Create category
+- Update category
+- Delete category
+- View all categories
 
-### 2. Books Management
-- Create, update, and delete books.
-- Each book contains:
-  - Title
-  - Author
-  - Publication Date
-  - Publisher
-  - Number of Pages
-  - Category
-- Display books in a responsive card-based layout (`/books`).
+### Book Management
+- Create book
+- Update book
+- Delete book
+- View all books
 
-### 3. Advanced Filtering
-- **Category Filter** – Browse books by selected category.
-- **Text Search** – Search books by Title, Author, or Publisher using a single search bar.
-- **Publication Date Filter** – Filter books using "From" and "To" publication date ranges.
+Each book includes:
+- Title
+- Author
+- Publication Date
+- Publisher
+- Number of Pages
+- Category
 
-## Technology Stack
+### Advanced Filtering
+- Filter by category
+- Search by title, author, or publisher
+- Filter by publication date range
 
-- **Frontend:** Next.js 16 (App Router), React, CSS Modules
-- **Backend:** Next.js Route Handlers (API)
-- **Database:** SQLite with Prisma ORM
-- **Icons:** Lucide React
+---
 
-## Getting Started
+## Tech Stack
 
-### 1. Install dependencies
+- Next.js 16 (App Router)
+- React
+- Prisma ORM
+- SQLite
+- CSS Modules
+- Lucide React
+
+---
+
+## Project Structure
+
+```
+app/
+components/
+lib/
+prisma/
+public/
+```
+
+---
+
+## Installation
+
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Configure the database
+### Configure environment
 
-Create a `.env` file:
+Create `.env`
 
 ```env
 DATABASE_URL="file:./dev.db"
 ```
 
-Then initialize the database:
+### Initialize database
 
 ```bash
 npx prisma db push
 ```
 
-### 3. Run the development server
+### Run development server
 
 ```bash
 npm run dev
 ```
 
-Open **http://localhost:3000** in your browser to access the application.
+Open:
 
-## Project Notes
+```
+http://localhost:3000
+```
 
-- Developed as a **Technical Assessment** for the **Azura Labs Internship Recruitment Process**.
-- Designed with inspiration from **modern web novel platforms**, emphasizing a premium visual experience while maintaining usability and responsive design.
-- Implements complete CRUD operations, advanced filtering, and a clean architecture using Next.js and Prisma.
+---
+
+## Design Inspiration
+
+The interface is inspired by modern web novel platforms, focusing on:
+- Premium dark theme
+- Responsive layout
+- Modern typography
+- Card-based UI
+- Smooth user experience
+
+---
+
+## Assessment Information
+
+This project was completed as part of the **Technical Assessment** for the **Azura Labs Internship Recruitment Process**.
+
+The implementation focuses on:
+- Clean and maintainable code
+- RESTful API using Next.js Route Handlers
+- Prisma ORM integration
+- Responsive UI
+- CRUD functionality
+- Search and filtering capabilities
+
+---
